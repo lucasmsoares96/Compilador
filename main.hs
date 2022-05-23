@@ -1,8 +1,9 @@
 #!/usr/bin/env runhaskell
 import Lexico ( lexico )
+import Sintatico (sintatico)
 
 main :: IO ()
 main = do
   codigo <- readFile "codigo.c"
-  -- mapM_ print tokens
-  mapM_ print $ lexico codigo
+  let tokens = lexico codigo
+  print $ sintatico tokens
