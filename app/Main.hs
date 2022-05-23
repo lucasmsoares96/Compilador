@@ -1,4 +1,4 @@
-#!/usr/bin/env runhaskell
+module Main where
 import Lexico ( lexico )
 import Sintatico (sintatico)
 
