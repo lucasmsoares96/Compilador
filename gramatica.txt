@@ -1,0 +1,15 @@
+<programa> ::= {<macro>} <main>
+<macro> ::= '#' 'include' <biblioteca> <macro> | &
+<main> ::= "main" "(" <parametros> ")" "{" <corpo> "}"
+<parametros> ::= <tipo> <variável> "," <parametros> | <tipo> <variável> | &
+
+<corpo> ::= <declaracao> <corpo> | <condicao> <corpo> | <repeticao> <corpo> | <atribuicao> <corpo> | "return 0" | &
+
+<declaracao> ::= <tipo> <variável> ";" | <tipo> <atribuicao>
+<atribuicao> ::= <variável> "=" <aritmetica> ";"
+<aritmetica> ::=  <numero> {<op_aritimetico> <numero>}*
+
+
+
+//<condicao> :: = "if" "(" <logica> ")" "{" <corpo> "}"
+// <repeticao> ::= <est_repeticao> "" ""
