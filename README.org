@@ -1,0 +1,31 @@
+#+TITLE: Compilador
+
+Compilador escrito em Haskell para a disciplina de compiladores.
+
+** Como executar
+Nesse repositório se encontra um binário pre-compilado para linux na arquitetura x86. Para executar o binário pre-compilado, basta digitar o seguinte comando.
+
+#+begin_src bash
+./Compilador
+#+end_src
+
+Caso deseje executar o programa em outra arquitetura, será necessário recompilar o código. Para isso é preciso ter um ambinete haskell instalado e configurado nas suas maquina. A forma recomendada de instalação é através do [[https://www.haskell.org/ghcup/][GHCup]]. Em seguida execute o seguinte comando.
+
+#+begin_src bash
+cabal run
+#+end_src
+
+O comando acima compila e executa o programa em Haskell.
+
+** Como funciona
+Um compilador é uma ferramento capaz de traduzir o código de uma linguagem de programação para outra linguagem. Esse compilador converte um código na linguagem C para o correspondente na linguagem Python.
+
+A compilação possui 6 etapas:
+1. Análise Lexica
+2. Análise Sintática
+3. Análise Semântica
+4. Geração de Código Intermediário
+5. Otimização do Código
+6. Geração do Código Final
+
+Atualmente este compilador está na sua segunda etapa (Análise Sintática)
