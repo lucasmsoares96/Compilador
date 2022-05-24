@@ -1,7 +1,14 @@
 #+TITLE: Compilador
 #+AUTHOR: Lucas Martins Soares
+#+OPTIONS: toc:t
 
-Compilador escrito em Haskell para a disciplina de compiladores.
+** Índice                                                              :toc:
+  - [[#link-do-repositório][Link do Repositório]]
+  - [[#como-executar][Como executar]]
+  - [[#como-funciona][Como funciona]]
+
+** Link do Repositório
+[[https://github.com/lucasmsoares96/Compilador]]
 
 ** Como executar
 Nesse repositório se encontra os binários pre-compilados para linux (sem extensão) e para windows (.exe) na arquitetura x86. Para executar o binário pre-compilado, basta digitar o seguinte comando:
