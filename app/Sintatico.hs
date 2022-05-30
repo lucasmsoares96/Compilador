@@ -1,5 +1,4 @@
 module Sintatico (sintatico) where
-import Lexico (lexico)
 
 sintatico :: [(String, String)] -> Bool
 sintatico xs = and (programa xs)
@@ -40,7 +39,7 @@ parametros (x : y : z : zs)
   | snd z == "," = [a, b, c] ++ parametros zs
   | otherwise = [False]
   where
-    a = fst x == "Tipos"
+    a = fst x == "Tipo"
     b = fst y == "Variavel"
     c = snd z == ","
 parametros _ = []
@@ -52,7 +51,7 @@ corpo (x : xs)
   | c = retornoResult ++ corpo (drop (length retornoResult) (x : xs))
   | otherwise = []
   where
-    a = fst x == "Tipos"
+    a = fst x == "Tipo"
     b = fst x == "Variavel"
     c = snd x == "return"
     declaracaoResult = declaracao (x : xs)
@@ -62,11 +61,11 @@ corpo _ = []
 
 declaracao :: [(String, String)] -> [Bool]
 declaracao (x : y : z : zs)
-  | c = [a,b,c]
-  | a = a : atribuicao(y:z:zs)
+  | c = [a, b, c]
+  | a = a : atribuicao (y : z : zs)
   | otherwise = []
   where
-    a = fst x == "Tipos"
+    a = fst x == "Tipo"
     b = fst y == "Variavel"
     c = snd z == ";"
 declaracao _ = []
@@ -82,16 +81,20 @@ atribuicao (x : y : z : ys)
     d = aritmetica ys
     e = [snd (ys !! tamanhoAritmetica) == ";"]
     tamanhoAritmetica = length d
-    numero = fst z == "Inteiro" || fst z == "Float" || fst z == "Variavel"
+    numero =
+      fst z == "int"
+        || fst z == "float"
+        || fst z == "Variavel"
+        || fst z == "char"
 atribuicao _ = []
 
 aritmetica :: [(String, String)] -> [Bool]
 aritmetica (x : y : xs)
   | not a = []
-  | otherwise = [a,b] ++ aritmetica xs
+  | otherwise = [a, b] ++ aritmetica xs
   where
     a = fst x == "Aritmetico"
-    b = fst y == "Inteiro" || fst y == "Float" || fst y == "Variavel"
+    b = fst y == "int" || fst y == "float" || fst y == "Variavel"
 aritmetica _ = []
 
 retorno :: [(String, String)] -> [Bool]
@@ -100,6 +103,6 @@ retorno (x : y : z : xs)
   | otherwise = [a, b, c]
   where
     a = snd x == "return"
-    b = fst y == "Inteiro"
+    b = fst y == "int"
     c = snd z == ";"
 retorno _ = []

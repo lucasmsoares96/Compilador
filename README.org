@@ -44,4 +44,4 @@ A compilação possui 6 etapas:
 5. Otimização do Código
 6. Geração do Código Final
 
-Atualmente este compilador está na sua segunda etapa (Análise Sintática)
+Atualmente este compilador está na sua segunda etapa (Análise Semântica)

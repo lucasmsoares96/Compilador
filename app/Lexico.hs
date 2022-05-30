@@ -7,7 +7,7 @@ lexico c = catalogar $ filter (`notElem` [" ", "\t", "\n"]) $ combinar $ concatM
 catalogar :: [String] -> [(String, String)]
 catalogar [] = []
 catalogar (x : xs)
-  | head x == '\"' && last x == '\"' = ("Literal", x) : catalogar xs
+  | head x == '\'' && last x == '\'' = ("char", x) : catalogar xs
   | head x == '<' && last x == '>' = ("Biblioteca", x) : catalogar xs
   | x `elem` delimitador = ("Delimitador", x) : catalogar xs
   | x `elem` atribuicao = ("Atribuicao", x) : catalogar xs
@@ -15,24 +15,24 @@ catalogar (x : xs)
   | x `elem` pontuacao = ("Pontuacao", x) : catalogar xs
   | x `elem` comandos = ("Comandos", x) : catalogar xs
   | x `elem` logico = ("Logico", x) : catalogar xs
-  | all isDigit x = ("Inteiro", x) : catalogar xs
-  | x `elem` tipos = ("Tipos", x) : catalogar xs
-  | isFloat x = ("Float", x) : catalogar xs
+  | all isDigit x = ("int", x) : catalogar xs
+  | x `elem` tipos = ("Tipo", x) : catalogar xs
+  | isfloat x = ("float", x) : catalogar xs
   | otherwise = ("Variavel", x) : catalogar xs
 
 combinar :: [String] -> [String]
 combinar [] = []
 combinar (x : xs)
-  | x == "\"" = concat (x : primeiraAspas) : combinar (drop tamanhoAspas xs)
+  | x == "\'" = concat (x : primeiraAspas) : combinar (drop tamanhoAspas xs)
   | x == "<" = concat (x : primeiroMenor) : combinar (drop tamanhoMenor xs)
   | x == ">" = concat (x : primeiroMaior) : combinar (drop tamanhoMaior xs)
   | x == "=" = concat (x : primeiroIgual) : combinar (drop tamanhoIgual xs)
   | x == "!" = concat (x : primeiroExclama) : combinar (drop tamanhoExclama xs)
-  | all isDigit x = concat (x : primeiroFloat) : combinar (drop tamanhoFloat xs)
+  | all isDigit x = concat (x : primeirofloat) : combinar (drop tamanhofloat xs)
   | otherwise = x : combinar xs
   where
-    primeiroFloat = juntarFloat xs
-    tamanhoFloat = length primeiroFloat
+    primeirofloat = juntarfloat xs
+    tamanhofloat = length primeirofloat
     primeiroExclama = juntarExclama xs
     tamanhoExclama = length primeiroExclama
     primeiroIgual = juntarIgual xs
@@ -63,9 +63,9 @@ palavras x = primeira : palavras (drop tamanho x)
     primeira = palavra x
     tamanho = length primeira
 
-juntarFloat :: [String] -> [String]
-juntarFloat [] = []
-juntarFloat (x : xs)
+juntarfloat :: [String] -> [String]
+juntarfloat [] = []
+juntarfloat (x : xs)
   | x == "." && all isDigit (head xs) = x : [head xs]
   | otherwise = []
 
@@ -84,7 +84,7 @@ juntarIgual (x : xs)
 juntarAspas :: [String] -> [String]
 juntarAspas [] = []
 juntarAspas (x : xs)
-  | x /= "\"" = x : juntarAspas xs
+  | x /= "\'" = x : juntarAspas xs
   | otherwise = [x]
 
 juntarMaior :: [String] -> [String]
@@ -121,8 +121,8 @@ tipos = ["char", "float", "int"]
 comandos :: [String]
 comandos = ["#", "include", "while", "if", "do", "return"]
 
-isFloat :: String -> Bool
-isFloat xs
+isfloat :: String -> Bool
+isfloat xs
   | head fim == '.' && all isDigit (tail fim) = True
   | otherwise = False
   where
