@@ -3,7 +3,7 @@ int main()
     int a;
     int b = 5;
     char c = 'o';
-     = 3;
-    int soma = a + b;
+    a = 3;
+    int soma = a + c;
     return 0;
 }
