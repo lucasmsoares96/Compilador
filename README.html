@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-05-31 ter 07:38 -->
+<!-- 2022-06-21 ter 19:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -193,7 +193,7 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<style type="text/css">body{ max-width:750px; margin-left: auto; margin-right: auto;}</style>
+<style type="text/css">body{ max-width:750px; margin-left: auto; margin-right: auto;} .org-svg{height: 500px;}</style>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -247,26 +247,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org09a190f">Link do Repositório</a></li>
-<li><a href="#org95c48b3">Como executar</a></li>
-<li><a href="#org7aa72bf">Como funciona</a></li>
+<li><a href="#orgdc1edc0">Link do Repositório</a></li>
+<li><a href="#orge35f6b6">Como executar</a></li>
+<li><a href="#org95dcfb9">Como funciona</a></li>
+<li><a href="#org825351b">Arquivos de testes</a></li>
 </ul>
 </div>
 </div>
 
 
-<div id="outline-container-org09a190f" class="outline-2">
-<h2 id="org09a190f">Link do Repositório</h2>
-<div class="outline-text-2" id="text-org09a190f">
+
+<div id="outline-container-orgdc1edc0" class="outline-2">
+<h2 id="orgdc1edc0">Link do Repositório</h2>
+<div class="outline-text-2" id="text-orgdc1edc0">
 <p>
 <a href="https://github.com/lucasmsoares96/Compilador">https://github.com/lucasmsoares96/Compilador</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org95c48b3" class="outline-2">
-<h2 id="org95c48b3">Como executar</h2>
-<div class="outline-text-2" id="text-org95c48b3">
+<div id="outline-container-orge35f6b6" class="outline-2">
+<h2 id="orge35f6b6">Como executar</h2>
+<div class="outline-text-2" id="text-orge35f6b6">
 <p>
 Nesse repositório se encontra os binários pre-compilados para linux (sem extensão) e para windows (.exe) na arquitetura x86. Para executar o binário pre-compilado, basta digitar o seguinte comando:
 </p>
@@ -276,7 +278,7 @@ Nesse repositório se encontra os binários pre-compilados para linux (sem exten
 </ul>
 <div class="org-src-container">
 <pre class="src src-bash">cd build
-./Compilador
+./Compilador Código_01.c
 </pre>
 </div>
 
@@ -285,7 +287,7 @@ Nesse repositório se encontra os binários pre-compilados para linux (sem exten
 </ul>
 <div class="org-src-container">
 <pre class="src src-bash">cd build
-"Compilador.exe"
+"Compilador.exe" Código_01.c
 </pre>
 </div>
 
@@ -304,9 +306,9 @@ O comando acima compila e executa o programa em Haskell.
 </div>
 </div>
 
-<div id="outline-container-org7aa72bf" class="outline-2">
-<h2 id="org7aa72bf">Como funciona</h2>
-<div class="outline-text-2" id="text-org7aa72bf">
+<div id="outline-container-org95dcfb9" class="outline-2">
+<h2 id="org95dcfb9">Como funciona</h2>
+<div class="outline-text-2" id="text-org95dcfb9">
 <p>
 Um compilador é uma ferramento capaz de traduzir o código de uma linguagem de programação para outra linguagem. Esse compilador converte um código na linguagem C para o correspondente na linguagem Python.
 </p>
@@ -328,10 +330,239 @@ Atualmente este compilador está na sua terceira etapa (Análise Semântica)
 </p>
 </div>
 </div>
+
+<div id="outline-container-org825351b" class="outline-2">
+<h2 id="org825351b">Arquivos de testes</h2>
+<div class="outline-text-2" id="text-org825351b">
+<p>
+A pasta <b>1</b> possui 10 códigos C para serem testados no compilador.  O resultado e o motivo das análise para cada arquivo são:
+</p>
+<ul class="org-ul">
+<li>Código<sub>01.c</sub>
+<ul class="org-ul">
+<li><p>
+não foram encontrador erros sintáticos ou semânticos
+</p>
+<pre class="example">
+"Analise Sintatica: True"
+"Analise Semantica: True"
+</pre></li>
+</ul></li>
+<li>Código<sub>02.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta o seguinte warning:
+</p>
+<pre class="example">
+Código_02.c: In function ‘main’:
+Código_02.c:8:7: warning: assignment to ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+    8 |     b = c + "casa";
+</pre></li>
+<li>O analisador semântico trata isso como um erro semântico, já que não é possível realizar operações com tipos diferentes nem com string,</li>
+</ul></li>
+<li>Código<sub>03.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta o seguinte warning:
+</p>
+<pre class="example">
+Código_03.c: In function ‘main’:
+Código_03.c:8:7: warning: assignment to ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+    8 |     b = "casa";
+    |       ^
+</pre></li>
+<li>O analisador semântico do compilador trata isso como um erro semântico, já que não é possível atribuir à uma variável um conteúdo de tipo diferente do seu tipo declarado.</li>
+</ul></li>
+<li>Código<sub>04.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta os seguintes erros e warnings
+</p>
+<pre class="example">
+Código_04.c: In function ‘main’:
+Código_04.c:9:15: warning: variable ‘y’ set but not used [-Wunused-but-set-variable]
+    9 |         float y;
+    |               ^
+Código_04.c:12:13: error: ‘i’ undeclared (first use in this function)
+    12 |     b = c + i * a - y;
+    |             ^
+Código_04.c:12:13: note: each undeclared identifier is reported only once for each function it appears in
+Código_04.c:12:21: error: ‘y’ undeclared (first use in this function)
+    12 |     b = c + i * a - y;
+</pre></li>
+<li>O anaalisador semântico do compilador trata isso como um erro semântico, já que não é possível atribuir um valor à uma variável que ainda não foi declarada.</li>
+</ul></li>
+<li>Código<sub>05.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta os seguintes erros e warnings
+</p>
+<pre class="example">
+Código_05.c: In function ‘main’:
+Código_05.c:19:10: error: invalid operands to binary % (have ‘float’ and ‘float’)
+19 |     b = a%b;
+    |          ^
+Código_05.c:20:13: warning: multi-character character constant [-Wmultichar]
+20 |     c = b + 'casa' + 'bola';
+    |             ^~~~~~
+Código_05.c:20:22: warning: multi-character character constant [-Wmultichar]
+20 |     c = b + 'casa' + 'bola';
+    |                      ^~~~~~
+Código_05.c:17:29: warning: unused variable ‘e’ [-Wunused-variable]
+17 |     float a=10,b=5,c=7,d=11,e=15;
+    |                             ^
+Código_05.c:17:24: warning: unused variable ‘d’ [-Wunused-variable]
+17 |     float a=10,b=5,c=7,d=11,e=15;
+    |                        ^
+Código_05.c:17:20: warning: variable ‘c’ set but not used [-Wunused-but-set-variable]
+17 |     float a=10,b=5,c=7,d=11,e=15;
+    |                    ^    
+</pre></li>
+<li>O analisador sintático trata o 'casa' como erro sintático e finaliza a análise.</li>
+</ul></li>
+<li>Código<sub>06.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta os seguintes erros e warnings
+</p>
+<pre class="example">
+Código_06.c: In function ‘main’:
+Código_06.c:7:10: warning: division by zero [-Wdiv-by-zero]
+    7 |     b = 0/0;
+    |          ^
+Código_06.c:5:25: warning: unused variable ‘e’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                         ^
+Código_06.c:5:21: warning: unused variable ‘d’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                     ^
+Código_06.c:5:17: warning: unused variable ‘c’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                 ^
+Código_06.c:5:13: warning: variable ‘b’ set but not used [-Wunused-but-set-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |             ^
+Código_06.c:5:9: warning: unused variable ‘a’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+</pre></li>
+<li>Nenhum erro é capturado por que a divisão por 0 é um erro lógico;</li>
+</ul></li>
+<li>Código<sub>07.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta os seguintes erros e warnings
+</p>
+<pre class="example">
+Código_07.c: In function ‘main’:
+Código_07.c:7:5: error: ‘f’ undeclared (first use in this function)
+    7 |     f = a/b;
+    |     ^
+Código_07.c:7:5: note: each undeclared identifier is reported only once for each function it appears in
+Código_07.c:5:25: warning: unused variable ‘e’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                         ^
+Código_07.c:5:21: warning: unused variable ‘d’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                     ^
+Código_07.c:5:17: warning: unused variable ‘c’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+</pre></li>
+<li>O analisador semântico do compilador trata isso como um erro semântico, já que não é possível atribuir um valor à uma variável que ainda não foi declarada.</li>
+</ul></li>
+<li>Código<sub>08.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta os seguintes erros e warnings
+</p>
+<pre class="example">
+Código_08.c: In function ‘main’:
+Código_08.c:7:16: error: invalid operands to binary + (have ‘char *’ and ‘char *’)
+    7 |     a = "dois" + "tres";
+    |         ~~~~~~ ^
+    |         |      |
+    |         char * char *
+Código_08.c:5:25: warning: unused variable ‘e’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                         ^
+Código_08.c:5:21: warning: unused variable ‘d’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                     ^
+Código_08.c:5:17: warning: unused variable ‘c’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                 ^
+Código_08.c:5:13: warning: unused variable ‘b’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |             ^
+Código_08.c:5:9: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |         ^
+</pre></li>
+<li>O analisador semântico do compilador trata isso como um erro semântico, já que a variável <b>a</b> é do tipo inteiro e <b>"dois"</b> e <b>"tres"</b> são ponteiros para char, isso é, são de tipos diferentes.</li>
+</ul></li>
+<li>Código<sub>09.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta o seguinte warning:
+</p>
+<pre class="example">
+Código_09.c: In function ‘main’:
+Código_09.c:7:29: warning: right-hand operand of comma expression has no effect [-Wunused-value]
+    7 |     a = 5.6 + 1.7 - 2.75 * 1,23 / 7.97;
+    |                             ^
+Código_09.c:5:25: warning: unused variable ‘e’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                         ^
+Código_09.c:5:21: warning: unused variable ‘d’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                     ^
+Código_09.c:5:17: warning: unused variable ‘c’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                 ^
+Código_09.c:5:13: warning: unused variable ‘b’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |             ^
+Código_09.c:5:9: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+</pre></li>
+<li>O analisador sintático do compilador trata isso como um erro sintático, já que a <b>1,23</b> não é uma senteçao válida</li>
+</ul></li>
+<li>Código<sub>10.c</sub>
+<ul class="org-ul">
+<li><p>
+o gcc apresenta os seguintes erros e warnings
+</p>
+<pre class="example">
+Código_10.c: In function ‘main’:
+Código_10.c:7:16: error: invalid operands to binary / (have ‘char *’ and ‘char *’)
+    7 |     a = "zero" / "zero";
+    |         ~~~~~~ ^
+    |         |      |
+    |         char * char *
+Código_10.c:5:25: warning: unused variable ‘e’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                         ^
+Código_10.c:5:21: warning: unused variable ‘d’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                     ^
+Código_10.c:5:17: warning: unused variable ‘c’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |                 ^
+Código_10.c:5:13: warning: unused variable ‘b’ [-Wunused-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+    |             ^
+Código_10.c:5:9: warning: variable ‘a’ set but not used [-Wunused-but-set-variable]
+    5 |     int a=0,b=0,c=0,d=0,e=0;
+
+</pre></li>
+<li>O analisador semântico do compilador trata isso como um erro semântico, já que a variável <b>a</b> é do tipo inteiro e <b>"dois"</b> e <b>"tres"</b> são ponteiros para char</li>
+</ul></li>
+</ul>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Lucas Martins Soares</p>
-<p class="date">Created: 2022-05-31 ter 07:38</p>
+<p class="date">Created: 2022-06-21 ter 19:07</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

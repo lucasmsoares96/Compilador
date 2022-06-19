@@ -1,15 +1,117 @@
+não terminais  entre <>
+    terminais  literal
+opcionais      entre [] 
+ou             separado por |
+0 ou mais      entre {}
+0 ou mais      * no final
+1 ou mais      + no final
+
+
+
 <programa> ::= {<macro>} <main>
 <macro> ::= '#' 'include' <biblioteca> <macro> | &
 <main> ::= "main" "(" <parametros> ")" "{" <corpo> "}"
 <parametros> ::= <tipo> <variável> "," <parametros> | <tipo> <variável> | &
+<corpo> ::= <declaracao> ";" <corpo> | <atribuicao> ";" <corpo> | &
 
-<corpo> ::= <declaracao> <corpo> | <condicao> <corpo> | <repeticao> <corpo> | <atribuicao> <corpo> | "return 0" | &
+<declaracao> ::= tipo <tipoDeclaracao>
+<tipoDeclaracao> ::= <variável>
+                   | <variável> "," <tipoDeclaracao>
+                   | <atribuicao>
+                   | <atribuicao> "," <tipoDeclaracao>
+<atribuicao> ::= variável = <operacao>
+-----------não sei o temanho da operacao
+<operacao> ::= <operandos>
+             | ( <operacao> )
+             | <operandos> <operador> <operacao>
+             | ( <operacao> ) <operador> <operacao>
+<operandos> ::= <variável> | int | float | char
 
-<declaracao> ::= <tipo> <variável> ";" | <tipo> <atribuicao>
-<atribuicao> ::= <variável> "=" <aritmetica> ";"
-<aritmetica> ::=  <numero> {<op_aritimetico> <numero>}*
+
+// declaracao
+<declaracao> ::= tipo <tipoDeclaracao>
+
+int a=10+1,b=5+1;  
+int a,b;           
+int a=10+1;        
+int a;             
+
+// tipoDeclaracao
+<tipoDeclaracao> ::= <variável>
+                   | <atribuicao>
+                   | <variável> "," <tipoDeclaracao>
+                   | <atribuicao> "," <tipoDeclaracao>
+
+// <tipoDeclaracao> ::= <variável>
+//                    | <variável> = <operacao>
+//                    | <variável> "," <tipoDeclaracao>
+//                    | <variável> = <operacao> "," <tipoDeclaracao>
+                     
+a;           
+a,b;         
+a=10+1;      
+a,b=5+1;
+a=10+1,b;
+a=10+1,b=5+1;
+
+//atribuicao
+<atribuicao> ::= variável = <operacao>
+a = <opercao>
+
+// operacao
+<operacao> ::= <operandos>
+             | <operandos> <operador> <operacao>
+             | ( <operacao> )
+             | ( <operacao> ) <operador> <operacao>
+
+<operandos> ::= <variável> | int | float | char
+
+a = b
+a = b + c
+a = (b+c)
+a = e +(b+c)
+a = (b+c) + d
+a = e +((b+c) + d)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// <declaracao> ::= <tipo> <decRepeat> ";"
+// <decRepeat> ::= <variável> | <variável> "," <decRepeat> | <variável> = <aritmetica> "," <decRepeat> | <variável> = <aritmetica> 
+
+// <declaracao> ::= <tipo> <variável> ";" | <tipo> <atribuicao>
+// <atribuicao> ::= <variável> "=" <aritmetica> ";" 
+// <aritmetica> ::=  <numero> {<op_aritimetico> <numero>}*
 
 //<condicao> :: = "if" "(" <logica> ")" "{" <corpo> "}"
 // <repeticao> ::= <est_repeticao> "" ""
+
+//<corpo> ::= <declaracao> <corpo> | <condicao> <corpo> | <repeticao> <corpo> | <atribuicao> <corpo> | "return 0" | &

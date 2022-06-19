@@ -3,49 +3,72 @@ module Semantico (semantico) where
 import qualified Data.Maybe
 
 semantico :: [(String, String)] -> Bool
-semantico tokens = unica lista && and(atribuicao (variavelPtipo tokens lista))
+semantico tokens =
+  unica lista
+    && and (atribuicao novosTokens)
   where
-    lista = variaveis tokens
+    lista = declaracao tokens
+    novosTokens = variavelPtipo tokens lista
 
 variavelPtipo :: [(String, String)] -> [(String, String)] -> [(String, String)]
 variavelPtipo [] _ = []
-variavelPtipo (x : xs) ys
-  | fst x == "Variavel" && snd (head xs) /= "(" =
-    a : variavelPtipo xs ys
-  | otherwise = x : variavelPtipo xs ys
+variavelPtipo (token : tokens) variaveis
+  -- quando forma uma variavel e não uma funcao
+  | fst token == "variavel"
+      && snd (head tokens) /= "(" =
+    a : variavelPtipo tokens variaveis
+  | otherwise = token : variavelPtipo tokens variaveis
   where
-    a = findValue (snd x) ys
+    a = findValue (snd token) variaveis
 
 atribuicao :: [(String, String)] -> [Bool]
 atribuicao (x : y : xs)
   | snd y == "=" =
-    foldl
-      -- (\acc x -> if fst x /= tipo then False else acc)
-      (\acc x -> fst x == tipo && acc)
-      True
-      operandos :
-    atribuicao (drop (length sentenca) (x : y : xs))
+    mesmoTipo :
+    atribuicao (drop (length sentenca + 1) (x : y : xs))
   | otherwise = atribuicao (y : xs)
   where
     tipo = fst x
-    sentenca = takeWhile (\x -> snd x /= ";") (x:y:xs)
+    sentenca = takeWhile (\x -> snd x /= "," && snd x /= ";") (x : y : xs)
+    mesmoTipo =
+      foldl
+        -- (\acc x -> if fst x /= tipo then False else acc)
+        (\acc x -> fst x == tipo && acc)
+        True
+        operandos
     operandos =
       filter
-        (\x -> fst x /= "Aritmetico" && fst x /= "Atribuicao")
+        ( \x ->
+            fst x /= "aritmetico"
+              && fst x /= "atribuicao"
+              && fst x /= "delimitador"
+        )
         sentenca
 atribuicao [_] = []
 atribuicao [] = []
 
-variaveis :: [(String, String)] -> [(String, String)]
-variaveis [] = []
-variaveis tokens
-  | x == "Tipo" && c /= "(" = (a, b) : variaveis (drop 2 tokens)
-  | otherwise = variaveis (drop 1 tokens)
+-- [(tipo,nome)]
+declaracao :: [(String, String)] -> [(String, String)]
+declaracao [] = []
+declaracao [_] = []
+declaracao [_, _] = []
+declaracao (x : y : z : xs)
+  | variavel = variaveisLinha tipo linha ++ declaracao resto
+  | otherwise = declaracao (y : z : xs)
   where
-    x = fst (head tokens)
-    a = snd (head tokens)
-    b = snd (tokens !! 1)
-    c = snd (tokens !! 2)
+    -- não é uma função
+    variavel = fst x == "tipo" && snd z /= "("
+    linha = takeWhile (\x -> snd x /= ";") (y : z : xs)
+    resto = drop (length linha + 1) (y : z : xs)
+    tipo = snd x
+
+variaveisLinha :: String -> [(String, String)] -> [(String, String)]
+variaveisLinha _ [] = []
+variaveisLinha tipo (x : xs)
+  | fst x == "variavel" = (tipo, nome) : variaveisLinha tipo xs
+  | otherwise = variaveisLinha tipo xs
+  where
+    nome = snd x
 
 unica :: [(String, String)] -> Bool
 unica [] = True
@@ -53,7 +76,7 @@ unica (x : xs)
   | findValue (snd x) xs == ("", "") = unica xs
   | otherwise = False
 
-findValue :: Foldable t => [Char] -> t ([Char], [Char]) -> ([Char], [Char])
+findValue :: Foldable t => String -> t (String, String) -> (String, String)
 findValue value =
   Data.Maybe.fromMaybe ("", "")
     . foldr
@@ -63,6 +86,3 @@ findValue value =
             else acc
       )
       Nothing
-
--- lista (int, a)
---      (\x acc -> (fst x == tipo) || acc)
