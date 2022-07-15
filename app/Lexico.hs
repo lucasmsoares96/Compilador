@@ -26,11 +26,11 @@ combinar :: [String] -> [String]
 combinar [] = []
 combinar (x : xs)
   | x == "\"" = concat (x : primeiraAspas) : combinar (drop tamanhoAspas xs)
-  | x == "/" && head xs == "/" = combinar (dropWhile (/= "\n")  xs)
+  | x == "/" && head xs == "/" = combinar (dropWhile (/= "\n") xs)
   | x == "<" = concat (x : primeiroMenor) : combinar (drop tamanhoMenor xs)
-  | x == ">" && head xs == "=" = (x ++ head xs): combinar (drop 1 xs)
-  | x == "=" && head xs == "=" = (x ++ head xs): combinar (drop 1 xs)
-  | x == "!" && head xs == "=" = (x ++ head xs): combinar (drop 1 xs)
+  | x == ">" && head xs == "=" = (x ++ head xs) : combinar (drop 1 xs)
+  | x == "=" && head xs == "=" = (x ++ head xs) : combinar (drop 1 xs)
+  | x == "!" && head xs == "=" = (x ++ head xs) : combinar (drop 1 xs)
   | all isDigit x = concat (x : primeirofloat) : combinar (drop tamanhofloat xs)
   | otherwise = x : combinar xs
   where
@@ -92,7 +92,7 @@ atribuicao :: [String]
 atribuicao = ["="]
 
 pontuacao :: [String]
-pontuacao = [",",".", ";"]
+pontuacao = [",", ".", ";"]
 
 tipos :: [String]
 tipos = ["char", "float", "int"]

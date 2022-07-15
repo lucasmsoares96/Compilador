@@ -1,26 +1,27 @@
-module Sintatico (sintatico, programa) where
+module Sintatico (sintatico) where
 
-sintatico :: [(String, String)] -> Bool
+import Tipos
+
+sintatico :: [Token] -> Bool
 sintatico xs = and (programa xs)
 
-programa :: [(String, String)] -> [Bool]
+programa :: [Token] -> [Bool]
 programa xs = macro tokensMacro ++ inicio tokensInicio
   where
     tokensMacro = takeWhile (\x -> fst x /= "tipo") xs
     tokensInicio = drop (length tokensMacro) xs
 
-
-macro :: [(String, String)] -> [Bool]
+macro :: [Token] -> [Bool]
 macro [] = []
 macro [_] = [False]
-macro [_,_] = [False,False]
+macro [_, _] = [False, False]
 macro (x : y : z : xs) = [a, b, c] ++ macro (drop 3 xs)
   where
     a = snd x == "#"
     b = snd y == "include"
     c = fst z == "biblioteca"
 
-inicio :: [(String, String)] -> [Bool]
+inicio :: [Token] -> [Bool]
 inicio xs = concat [a, b, c, d, e, f, g, h]
   where
     a = [snd (head xs) == "int"]
@@ -34,7 +35,7 @@ inicio xs = concat [a, b, c, d, e, f, g, h]
     tamanhoParametros = length d
     tamanhoCorpo = length g
 
-parametros :: [(String, String)] -> [Bool]
+parametros :: [Token] -> [Bool]
 parametros (x : y : z : zs)
   | snd x == ")" = []
   | snd y == ")" = [False]
@@ -49,25 +50,25 @@ parametros _ = []
 
 -- refatorar tudo pra cima
 
-corpo :: [(String, String)] -> [Bool]
+corpo :: [Token] -> [Bool]
 corpo [] = []
-corpo xs
+corpo z
   | tipo = declaracao line ++ [ptoVirgula] ++ corpo (tail rest)
   | variavel = atribuicao line ++ [ptoVirgula] ++ corpo (tail rest)
   | retonro = retorno line ++ [ptoVirgula]
-  -- verificar o fim
+  -- verificar se existe algo depois do retorno
   | otherwise = [False]
   where
-    line = takeWhile (\x -> snd x /= ";") xs
-    rest = drop (length line) xs
+    line = takeWhile (\x -> snd x /= ";") z
+    rest = drop (length line) z
     ptoVirgula = snd (head rest) == ";"
     -- dá pra tirar ?
-    x = head xs
-    tipo = fst x == "tipo"
-    variavel = fst x == "variavel"
-    retonro = snd x == "return"
+    a = head z
+    tipo = fst a == "tipo"
+    variavel = fst a == "variavel"
+    retonro = snd a == "return"
 
-declaracao :: [(String, String)] -> [Bool]
+declaracao :: [Token] -> [Bool]
 declaracao [] = []
 declaracao (x : xs)
   | a = a : tipoDeclaracao xs
@@ -81,24 +82,24 @@ declaracao (x : xs)
 --                     | <variável> "," <tipoDeclaracao>
 --                     | <variável>
 
-tipoDeclaracao :: [(String, String)] -> [Bool]
+tipoDeclaracao :: [Token] -> [Bool]
 tipoDeclaracao [] = [False]
-tipoDeclaracao [x] = [fst x == "variavel"]
-tipoDeclaracao (x : xs)
-  | virgulaVar = [variavel, virgulaVar] ++ tipoDeclaracao (tail xs)
+tipoDeclaracao [a] = [fst a == "variavel"]
+tipoDeclaracao (a : z)
+  | virgulaVar = [variavel, virgulaVar] ++ tipoDeclaracao (tail z)
   | virgulaOP = [variavel, recebe] ++ operacao ateVirgula ++ [virgulaOP] ++ tipoDeclaracao depoisVirgula
   | recebe = [variavel, recebe] ++ operacao ateVirgula
   | otherwise = [False]
   where
-    variavel = fst x == "variavel"
-    virgulaVar = snd (head xs) == ","
-    recebe = snd (head xs) == "="
-    ateVirgula = takeWhile (\x -> snd x /= ",") (tail xs)
-    apartirVirgula = drop (length ateVirgula) (tail xs)
+    variavel = fst a == "variavel"
+    virgulaVar = snd (head z) == ","
+    recebe = snd (head z) == "="
+    ateVirgula = takeWhile (\x -> snd x /= ",") (tail z)
+    apartirVirgula = drop (length ateVirgula) (tail z)
     virgulaOP = not (null apartirVirgula)
     depoisVirgula = tail apartirVirgula
 
-atribuicao :: [(String, String)] -> [Bool]
+atribuicao :: [Token] -> [Bool]
 atribuicao [] = [False]
 atribuicao (x : xs)
   | variavel = [variavel, recebe] ++ operacao (tail xs)
@@ -113,10 +114,15 @@ atribuicao (x : xs)
 --              | ( <operacao> )
 --              | ( <operacao> ) <operador> <operacao>
 
-operacao :: [(String, String)] -> [Bool]
+operacao :: [Token] -> [Bool]
 operacao [] = [False]
 operacao (x : xs)
-  | parentese1 && aritmetico2 = [parentese1] ++ operacao entreParenteses ++ [parentese2] ++ [aritmetico2] ++ operacao depoisAritmetico2
+  | parentese1 && aritmetico2 =
+    [parentese1]
+      ++ operacao entreParenteses
+      ++ [parentese2]
+      ++ [aritmetico2]
+      ++ operacao depoisAritmetico2
   | operando && aritmetico1 = [operando] ++ [aritmetico1] ++ operacao depoisAritmetico1
   | operando = [operando]
   | parentese1 = [parentese1] ++ operacao entreParenteses ++ [parentese2]
@@ -126,7 +132,6 @@ operacao (x : xs)
     aritmetico1 = not (null xs) && fst (head xs) == "aritmetico"
     depoisAritmetico1 = drop 1 xs
     parentese1 = snd x == "("
-    -- entreParenteses = takeWhile (\x -> snd x /= ")") xs
     entreParenteses = take (correpondente 1 xs -1) xs
     apartirParenteses2 = drop (length entreParenteses) xs
     parentese2 = snd (head apartirParenteses2) == ")"
@@ -134,7 +139,7 @@ operacao (x : xs)
     aritmetico2 = not (null depoisParentese2) && fst (head depoisParentese2) == "aritmetico"
     depoisAritmetico2 = drop 1 depoisParentese2
 
-correpondente :: Int -> [(String, String)] -> Int
+correpondente :: Int -> [Token] -> Int
 correpondente 0 _ = 0
 correpondente _ [] = 0
 correpondente contParenteses (atual : tokens)
@@ -148,10 +153,11 @@ correpondente contParenteses (atual : tokens)
 operandos :: [String]
 operandos = ["variavel", "int", "float", "char"]
 
-retorno :: [(String, String)] -> [Bool]
+retorno :: [Token] -> [Bool]
 retorno [] = [False]
 retorno [_] = [False]
-retorno (x : y : xs) = [a, b]
+-- verificar se existe algo depois do retorno
+retorno (x : y ) = [a, b]
   where
     a = snd x == "return"
-    b = fst y == "int"
+    b = fst (head y) == "int"

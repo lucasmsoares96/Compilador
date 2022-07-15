@@ -1,27 +1,31 @@
 module Main where
-import System.Environment
 
 import Lexico (lexico)
-import Sintatico (sintatico, programa)
 import Semantico (semantico)
+import Sintatico (sintatico)
+import Tradutor (tradutor)
+import System.Environment ( getArgs )
 
 main :: IO ()
 main = do
   args <- getArgs
-  codigo <- readFile (head args)
-  let tokens = lexico codigo
-  let parse = sintatico tokens
-  let semantic = semantico tokens
-  -- codigo <- readFile "1/Código_01.c"
+  let nomeC = head args
+  codigo <- readFile nomeC
   -- mapM_ putStrLn args
+  -- codigo <- readFile "./Código_01.c"
+  -- let nomeC = "Código_01.c"
   -- putStrLn codigo
+  let tokens = lexico codigo
   -- mapM_ print tokens
   -- mapM_ print (programa tokens)
+  let parse = sintatico tokens
+  let semantic = semantico tokens
+  let nomePy = takeWhile (/= '.') nomeC ++ ".py"
+  let python = tradutor tokens
 
   print ("Analise Sintatica: " ++ show parse)
   if parse
-    then
-      print ("Analise Semantica: " ++ show semantic)
-    else
-      print ""
-      
+    then print ("Analise Semantica: " ++ show semantic)
+    else print ""
+
+  writeFile nomePy python

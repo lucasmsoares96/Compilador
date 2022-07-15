@@ -46,7 +46,7 @@ A compilação possui 6 etapas:
 5. Otimização do Código
 6. Geração do Código Final
 
-Atualmente este compilador está na sua terceira etapa (Análise Semântica)
+Atualmente este compilador está na sua quarta e última etapa (Geração de código Python)
 
 ** Arquivos de testes
 A pasta *1* possui 10 códigos C para serem testados no compilador.  O resultado e o motivo das análise para cada arquivo são:

@@ -1,0 +1,7 @@
+2022-07-09 10:26:14.892569493000 [149657(ThreadId 13)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-07-09 10:27:48.377964665000 [149842(ThreadId 13)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2022-07-09 10:32:03.838397316000 [149938(ThreadId 13)] ERROR APP - user error (no stacktrace found.)
+2022-07-09 10:32:03.845764509000 [149938(ThreadId 13)] ERROR APP - user error (no stacktrace found.)
+2022-07-09 10:32:11.101639223000 [149938(ThreadId 13)] ERROR APP - user error (ExecResult not found.)
+2022-07-09 12:15:12.589685356000 [159258(ThreadId 13)] ERROR APP - user error (no stacktrace found.)
+2022-07-09 12:15:12.658149032000 [159258(ThreadId 13)] ERROR APP - user error (no stacktrace found.)

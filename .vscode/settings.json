@@ -1,5 +1,7 @@
 {
     "files.associations": {
         "stdio.h": "c"
-    }
+    },
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
